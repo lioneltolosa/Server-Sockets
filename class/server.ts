@@ -33,7 +33,7 @@ export default class Server {
         console.log('Listening to connections - Sockets');
 
         this.io.on('connection', clients => {
-            console.log('an user connected');
+            console.log('User connected');
 
             clients.on('disconnect', () => {
               console.log('user disconnected');
