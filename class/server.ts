@@ -5,13 +5,15 @@ import http from 'http';
 
 export default class Server {
 
+    private static _intance: Server;
+
     public app: express.Application;
     public port: number;
 
     public io: socketIO.Server;
     private httpServer: http.Server;
 
-    constructor() {
+    private constructor() {
         this.app = express();
         this.port = SERVER_PORT;
 
@@ -19,6 +21,12 @@ export default class Server {
         this.io = socketIO( this.httpServer );
 
         this.listeningSockets();
+    }
+
+    // Patron Singleton
+    public static get instance () {
+        return this._intance || (this._intance = new this());
+        // return this._intance || (this._intance = new Server());
     }
 
     private listeningSockets() {
