@@ -3,6 +3,8 @@ import { SERVER_PORT } from '../global/environment';
 import socketIO from 'socket.io';
 import http from 'http';
 
+import * as socket from '../sockets/sockets';
+
 export default class Server {
 
     private static _intance: Server;
@@ -20,7 +22,7 @@ export default class Server {
         this.httpServer = new http.Server( this.app );
         this.io = socketIO( this.httpServer );
 
-        this.listeningSockets();
+        this.escucharSockets();
     }
 
     // Patron Singleton
@@ -29,17 +31,22 @@ export default class Server {
         // return this._intance || (this._intance = new Server());
     }
 
-    private listeningSockets() {
-        console.log('Listening to connections - Sockets');
+    private escucharSockets() {
 
-        this.io.on('connection', clients => {
-            console.log('User connected');
+        console.log('Escuchando conexiones - sockets');
 
-            clients.on('disconnect', () => {
-              console.log('user disconnected');
-            });
+        this.io.on('connection', cliente => {
+
+            console.log('Cliente conectado');
+
+            // Mensajes
+            socket.mensaje( cliente, this.io );
+
+            // Desconectar
+            socket.desconectar( cliente );         
+
         });
-          
+
     }
 
     start( callback: Function) {
