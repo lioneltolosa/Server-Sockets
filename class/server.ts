@@ -1,9 +1,12 @@
+
 import express from 'express';
 import { SERVER_PORT } from '../global/environment';
 import socketIO from 'socket.io';
 import http from 'http';
 
 import * as socket from '../sockets/sockets';
+
+
 
 export default class Server {
 
@@ -15,7 +18,9 @@ export default class Server {
     public io: socketIO.Server;
     private httpServer: http.Server;
 
+
     private constructor() {
+
         this.app = express();
         this.port = SERVER_PORT;
 
@@ -25,11 +30,10 @@ export default class Server {
         this.escucharSockets();
     }
 
-    // Patron Singleton
-    public static get instance () {
-        return this._intance || (this._intance = new this());
-        // return this._intance || (this._intance = new Server());
+    public static get instance() {
+        return this._intance || ( this._intance = new this() );
     }
+
 
     private escucharSockets() {
 
@@ -49,10 +53,13 @@ export default class Server {
 
     }
 
-    start( callback: Function) {
-        // this.app.listen( this.port, callback );
+
+    start( callback: Function ) {
+
         this.httpServer.listen( this.port, () => {
             
-        });
+        } );
+
     }
+
 }
